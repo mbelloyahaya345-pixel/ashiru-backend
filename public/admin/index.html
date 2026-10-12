@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | ASHIRU TRADITIONAL BONE SETTER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #f8fafc;
+      --surface-white: #ffffff;
+      --primary-emerald: #0a2e22;
+      --emerald-accent: #059669;
+      --emerald-light: #ecfdf5;
+      --gold: #d4a340;
+      --gold-dark: #855806;
+      --gold-light: #fef3c7;
+      --border: rgba(212, 163, 64, 0.28);
+      --border-subtle: #e2e8f0;
+      --text-dark: #0f172a;
+      --text-muted: #475569;
+      --danger: #ef4444;
+      --shadow-card: 0 4px 20px rgba(10, 46, 34, 0.05);
+      --shadow-hover: 0 10px 30px rgba(10, 46, 34, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-dark);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    /* Header Bar */
+    .header-bar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+    }
+
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--primary-emerald);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(10, 46, 34, 0.2);
+      border: 1px solid var(--gold);
+    }
+
+    .brand-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.18rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: var(--primary-emerald);
+      line-height: 1.2;
+    }
+
+    .brand-sub {
+      font-size: 0.76rem;
+      color: var(--gold-dark);
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-top {
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-site {
+      background: #ffffff;
+      color: var(--primary-emerald);
+      border-color: var(--border-subtle);
+    }
+    .btn-site:hover {
+      border-color: var(--gold);
+      color: var(--gold-dark);
+    }
+
+    .btn-hotline {
+      background: var(--primary-emerald);
+      color: #ffffff;
+      border-color: var(--primary-emerald);
+    }
+    .btn-hotline:hover {
+      background: #124d3a;
+      box-shadow: 0 4px 14px rgba(10, 46, 34, 0.25);
+    }
+
+    .btn-refresh {
+      background: var(--gold-light);
+      color: var(--gold-dark);
+      border-color: rgba(212, 163, 64, 0.4);
+    }
+    .btn-refresh:hover {
+      background: #fde68a;
+    }
+
+    /* Main Container */
+    .dashboard-container {
+      max-width: 1400px;
+      margin: 30px auto;
+      padding: 0 24px;
+    }
+
+    /* KPI Stat Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 20px 22px;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary-emerald);
+    }
+
+    .stat-card.gold-edge::before {
+      background: var(--gold);
+    }
+    .stat-card.red-edge::before {
+      background: var(--danger);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .stat-number {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--primary-emerald);
+      line-height: 1;
+    }
+
+    .stat-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    /* Tabs Bar */
+    .tabs-wrapper {
+      display: flex;
+      gap: 10px;
+      border-bottom: 2px solid var(--border-subtle);
+      margin-bottom: 24px;
+      padding-bottom: 4px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 12px 24px;
+      border-radius: 10px 10px 0 0;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary-emerald);
+      background: rgba(10, 46, 34, 0.03);
+    }
+
+    .tab-btn.active {
+      color: var(--primary-emerald);
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-bottom: 3px solid var(--gold);
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.02);
+    }
+
+    .tab-badge {
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+
+    .tab-btn.active .tab-badge {
+      background: var(--gold-light);
+      color: var(--gold-dark);
+    }
+
+    /* Filter & Search Bar */
+    .filter-panel {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      padding: 9px 14px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      min-width: 260px;
+      outline: none;
+      font-family: inherit;
+    }
+    .search-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212, 163, 64, 0.15);
+    }
+
+    .select-filter {
+      padding: 9px 14px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      background: #ffffff;
+      outline: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* Table Container */
+    .table-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.86rem;
+    }
+
+    th {
+      background: #f8fafc;
+      padding: 14px 18px;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    td {
+      padding: 16px 18px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: middle;
+      color: var(--text-dark);
+    }
+
+    tr:hover td {
+      background-color: #fafbfc;
+    }
+
+    /* Badges */
+    .badge-sector {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sector-orthopedic {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .sector-alternative {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .sector-farming {
+      background: #fefce8;
+      color: #a16207;
+      border: 1px solid #fef08a;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .status-pending { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+    .status-confirmed { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .status-treatment { background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
+    .status-completed { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+    .status-dispatched { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+
+    /* Action Buttons */
+    .btn-action {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-wa {
+      background: #25d366;
+      color: #ffffff;
+    }
+    .btn-wa:hover {
+      background: #20bd5a;
+    }
+
+    .btn-tel {
+      background: #f1f5f9;
+      color: var(--text-dark);
+      border: 1px solid #cbd5e1;
+    }
+    .btn-tel:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-email {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .status-select {
+      padding: 5px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border-subtle);
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: #ffffff;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--primary-emerald);
+      color: #ffffff;
+      border: 1px solid var(--gold);
+      padding: 14px 22px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      display: none;
+      z-index: 1000;
+      animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state-icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+      color: #94a3b8;
+    }
+
+    /* Node.js indicator */
+    .node-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header-bar">
+    <div class="brand-block">
+      <div class="brand-avatar">🦴</div>
+      <div>
+        <h1 class="brand-title">ASHIRU TRADITIONAL BONE SETTER</h1>
+        <p class="brand-sub">Alternative Medical Services • Traditional Orthopedic Services • General Farming</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="node-badge">⚡ Node.js / Express</span>
+      <button class="btn-top btn-refresh" onclick="loadAllData()">🔄 Refresh</button>
+      <a href="https://ashiru-tbs.surge.sh" target="_blank" class="btn-top btn-site">🌐 Live Website</a>
+      <a href="tel:+2348137088984" class="btn-top btn-hotline">📞 +234 813 708 8984</a>
+    </div>
+  </header>
+
+  <!-- Container -->
+  <main class="dashboard-container">
+    
+    <!-- KPI Stats Grid -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">
+          <span>Total Consultations</span>
+          <span>📋</span>
+        </div>
+        <div class="stat-number" id="stat-total-apt">0</div>
+        <div class="stat-desc"><span id="stat-pending-apt" style="color: #b45309; font-weight: 700;">0</span> pending review</div>
+      </div>
+
+      <div class="stat-card gold-edge">
+        <div class="stat-label">
+          <span>Orthopedic Trauma</span>
+          <span>🦴</span>
+        </div>
+        <div class="stat-number" id="stat-orthopedic">0</div>
+        <div class="stat-desc">Closed fractures &amp; dislocations</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">
+          <span>Alternative Therapies</span>
+          <span>🌿</span>
+        </div>
+        <div class="stat-number" id="stat-alternative">0</div>
+        <div class="stat-desc">Holistic &amp; herbal bone poultices</div>
+      </div>
+
+      <div class="stat-card gold-edge">
+        <div class="stat-label">
+          <span>General Farming</span>
+          <span>🌾</span>
+        </div>
+        <div class="stat-number" id="stat-farming">0</div>
+        <div class="stat-desc">Medicinal herb &amp; farm inquiries</div>
+      </div>
+
+      <div class="stat-card red-edge">
+        <div class="stat-label">
+          <span>24/7 Trauma Dispatches</span>
+          <span>🚨</span>
+        </div>
+        <div class="stat-number" id="stat-emergencies">0</div>
+        <div class="stat-desc">Emergency walk-in &amp; call logs</div>
+      </div>
+    </section>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-wrapper">
+      <button class="tab-btn active" onclick="switchTab('appointments')" id="tab-btn-appointments">
+        📋 Consultations &amp; Appointments
+        <span class="tab-badge" id="badge-apt-count">0</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('emergencies')" id="tab-btn-emergencies">
+        🚨 24/7 Emergency Trauma Logs
+        <span class="tab-badge" id="badge-emg-count">0</span>
+      </button>
+      <button class="tab-btn" onclick="switchTab('inquiries')" id="tab-btn-inquiries">
+        ✉️ Contact &amp; Farm Inquiries
+        <span class="tab-badge" id="badge-inq-count">0</span>
+      </button>
+    </div>
+
+    <!-- Filter & Search Bar -->
+    <section class="filter-panel">
+      <div class="filter-group">
+        <input type="text" id="searchInput" placeholder="Search by name, phone, ref, injury..." class="search-input" oninput="applyFilters()">
+        
+        <select id="sectorFilter" class="select-filter" onchange="applyFilters()">
+          <option value="all">All Sectors</option>
+          <option value="orthopedic">Traditional Orthopedics</option>
+          <option value="alternative">Alternative Medicine</option>
+          <option value="farming">General Farming</option>
+        </select>
+
+        <select id="statusFilter" class="select-filter" onchange="applyFilters()">
+          <option value="all">All Statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="In Treatment">In Treatment</option>
+          <option value="Completed">Completed</option>
+          <option value="Dispatched">Dispatched</option>
+        </select>
+      </div>
+
+      <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">
+        Showing <span id="record-count" style="color: var(--primary-emerald); font-weight: 800;">0</span> records
+      </div>
+    </section>
+
+    <!-- Table Container -->
+    <section class="table-card">
+      <div class="table-responsive">
+        <table id="dataTable">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast">Status updated successfully!</div>
+
+  <script>
+    let currentTab = 'appointments';
+    let rawData = {
+      appointments: [],
+      emergencies: [],
+      inquiries: [],
+      stats: {}
+    };
+
+    async function loadAllData() {
+      try {
+        const [statsRes, aptRes, emgRes, inqRes] = await Promise.all([
+          fetch('/api/stats').then(r => r.json()),
+          fetch('/api/appointments?limit=100').then(r => r.json()),
+          fetch('/api/emergency').then(r => r.json()),
+          fetch('/api/contact').then(r => r.json())
+        ]);
+
+        rawData.stats = statsRes;
+        rawData.appointments = aptRes.data || [];
+        rawData.emergencies = emgRes.data || [];
+        rawData.inquiries = inqRes.data || [];
+
+        updateStatsUI();
+        applyFilters();
+      } catch (err) {
+        console.error('Failed to load dashboard data:', err);
+      }
+    }
+
+    function updateStatsUI() {
+      const apt = rawData.appointments;
+      const emg = rawData.emergencies;
+      const inq = rawData.inquiries;
+
+      document.getElementById('stat-total-apt').textContent = apt.length;
+      document.getElementById('stat-pending-apt').textContent = apt.filter(a => a.status === 'Pending').length;
+      document.getElementById('stat-orthopedic').textContent = apt.filter(a => a.sector === 'orthopedic').length;
+      document.getElementById('stat-alternative').textContent = apt.filter(a => a.sector === 'alternative').length;
+      document.getElementById('stat-farming').textContent = apt.filter(a => a.sector === 'farming').length + inq.filter(i => i.sector === 'farming').length;
+      document.getElementById('stat-emergencies').textContent = emg.length;
+
+      document.getElementById('badge-apt-count').textContent = apt.length;
+      document.getElementById('badge-emg-count').textContent = emg.length;
+      document.getElementById('badge-inq-count').textContent = inq.length;
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`tab-btn-${tab}`).classList.add('active');
+
+      // Adjust filter visibility
+      const sectorFilter = document.getElementById('sectorFilter');
+      const statusFilter = document.getElementById('statusFilter');
+
+      if (tab === 'appointments') {
+        sectorFilter.style.display = 'block';
+        statusFilter.style.display = 'block';
+      } else if (tab === 'emergencies') {
+        sectorFilter.style.display = 'none';
+        statusFilter.style.display = 'block';
+      } else {
+        sectorFilter.style.display = 'block';
+        statusFilter.style.display = 'none';
+      }
+
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const sector = document.getElementById('sectorFilter').value;
+      const status = document.getElementById('statusFilter').value;
+
+      if (currentTab === 'appointments') {
+        let list = rawData.appointments.filter(item => {
+          const matchSector = sector === 'all' || item.sector === sector;
+          const matchStatus = status === 'all' || item.status === status;
+          const matchQ = !q || (
+            (item.name && item.name.toLowerCase().includes(q)) ||
+            (item.phone && item.phone.toLowerCase().includes(q)) ||
+            (item.reference_code && item.reference_code.toLowerCase().includes(q)) ||
+            (item.service && item.service.toLowerCase().includes(q)) ||
+            (item.details && item.details.toLowerCase().includes(q))
+          );
+          return matchSector && matchStatus && matchQ;
+        });
+        renderAppointments(list);
+      } else if (currentTab === 'emergencies') {
+        let list = rawData.emergencies.filter(item => {
+          const matchStatus = status === 'all' || item.status === status;
+          const matchQ = !q || (
+            (item.caller_name && item.caller_name.toLowerCase().includes(q)) ||
+            (item.caller_phone && item.caller_phone.toLowerCase().includes(q)) ||
+            (item.injury_type && item.injury_type.toLowerCase().includes(q)) ||
+            (item.location && item.location.toLowerCase().includes(q)) ||
+            (item.notes && item.notes.toLowerCase().includes(q))
+          );
+          return matchStatus && matchQ;
+        });
+        renderEmergencies(list);
+      } else if (currentTab === 'inquiries') {
+        let list = rawData.inquiries.filter(item => {
+          const matchSector = sector === 'all' || item.sector === sector;
+          const matchQ = !q || (
+            (item.name && item.name.toLowerCase().includes(q)) ||
+            (item.email && item.email.toLowerCase().includes(q)) ||
+            (item.phone && item.phone.toLowerCase().includes(q)) ||
+            (item.subject && item.subject.toLowerCase().includes(q)) ||
+            (item.message && item.message.toLowerCase().includes(q))
+          );
+          return matchSector && matchQ;
+        });
+        renderInquiries(list);
+      }
+    }
+
+    function renderAppointments(list) {
+      document.getElementById('record-count').textContent = list.length;
+      const thead = document.getElementById('tableHead');
+      thead.innerHTML = `
+        <tr>
+          <th>Reference &amp; Patient</th>
+          <th>Sector &amp; Service</th>
+          <th>Urgency &amp; Schedule</th>
+          <th>Status</th>
+          <th>Clinical Notes</th>
+          <th>Actions</th>
+        </tr>
+      `;
+
+      const tbody = document.getElementById('tableBody');
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state"><div class="empty-state-icon">📋</div>No consultation records match your criteria.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(apt => {
+        const cleanPhone = (apt.phone || '').replace(/[^0-9]/g, '');
+        const waMsg = encodeURIComponent(`*ASHIRU TRADITIONAL BONE SETTER*\nHello ${apt.name},\nRegarding your consultation request (${apt.reference_code}) for ${apt.service}. Our clinic has reviewed your case.`);
+        return `
+          <tr>
+            <td>
+              <div style="font-weight: 800; color: var(--gold-dark);">${escapeHtml(apt.reference_code)}</div>
+              <div style="font-weight: 700; font-size: 0.95rem; margin-top: 3px;">${escapeHtml(apt.name)}</div>
+              <div style="font-size: 0.78rem; color: var(--text-muted);">${escapeHtml(apt.phone)}</div>
+            </td>
+            <td>
+              <span class="badge-sector sector-${escapeHtml(apt.sector || 'orthopedic')}">${escapeHtml(apt.sector || 'orthopedic')}</span>
+              <div style="font-weight: 600; font-size: 0.82rem; margin-top: 4px;">${escapeHtml(apt.service)}</div>
+            </td>
+            <td>
+              <div style="font-weight: 700; color: ${apt.urgency && apt.urgency.includes('Emergency') ? '#dc2626' : 'var(--text-dark)'};">${escapeHtml(apt.urgency)}</div>
+              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">📅 ${escapeHtml(apt.preferred_date || 'N/A')}</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">${escapeHtml(apt.consult_type || '')}</div>
+            </td>
+            <td>
+              <select class="status-select" onchange="updateRecordStatus('appointment', ${apt.id}, this.value)">
+                <option value="Pending" ${apt.status === 'Pending' ? 'selected' : ''}>⏳ Pending</option>
+                <option value="Confirmed" ${apt.status === 'Confirmed' ? 'selected' : ''}>✅ Confirmed</option>
+                <option value="In Treatment" ${apt.status === 'In Treatment' ? 'selected' : ''}>🩺 In Treatment</option>
+                <option value="Completed" ${apt.status === 'Completed' ? 'selected' : ''}>✨ Completed</option>
+                <option value="Cancelled" ${apt.status === 'Cancelled' ? 'selected' : ''}>❌ Cancelled</option>
+              </select>
+            </td>
+            <td>
+              <div style="max-width: 280px; font-size: 0.8rem; line-height: 1.4; color: var(--text-muted);">
+                ${escapeHtml(apt.details || 'No clinical notes provided.')}
+              </div>
+              <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">${escapeHtml(apt.created_at || '')}</div>
+            </td>
+            <td>
+              <div style="display: flex; gap: 8px;">
+                <a href="https://wa.me/${cleanPhone}?text=${waMsg}" target="_blank" class="btn-action btn-wa">💬 WhatsApp</a>
+                <a href="tel:${cleanPhone}" class="btn-action btn-tel">📞 Call</a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderEmergencies(list) {
+      document.getElementById('record-count').textContent = list.length;
+      const thead = document.getElementById('tableHead');
+      thead.innerHTML = `
+        <tr>
+          <th>Caller &amp; Contact</th>
+          <th>Injury / Trauma Type</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Triage Notes &amp; Time</th>
+          <th>Actions</th>
+        </tr>
+      `;
+
+      const tbody = document.getElementById('tableBody');
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state"><div class="empty-state-icon">🚨</div>No emergency dispatch records found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(emg => {
+        const cleanPhone = (emg.caller_phone || '').replace(/[^0-9]/g, '');
+        const waMsg = encodeURIComponent(`🚨 *ASHIRU TRADITIONAL BONE SETTER EMERGENCY TRIAGE*\nHello ${emg.caller_name}, our trauma team is preparing reception for ${emg.injury_type}.`);
+        return `
+          <tr>
+            <td>
+              <div style="font-weight: 800; font-size: 0.95rem;">${escapeHtml(emg.caller_name)}</div>
+              <div style="font-size: 0.8rem; color: #dc2626; font-weight: 700;">${escapeHtml(emg.caller_phone)}</div>
+            </td>
+            <td>
+              <div style="font-weight: 700; color: #b91c1c;">⚠️ ${escapeHtml(emg.injury_type)}</div>
+            </td>
+            <td>
+              <div style="font-size: 0.82rem; color: var(--text-dark);">📍 ${escapeHtml(emg.location || 'Kano Clinic')}</div>
+            </td>
+            <td>
+              <select class="status-select" onchange="updateRecordStatus('emergency', ${emg.id}, this.value)">
+                <option value="Dispatched" ${emg.status === 'Dispatched' ? 'selected' : ''}>🚨 Dispatched</option>
+                <option value="En Route" ${emg.status === 'En Route' ? 'selected' : ''}>🚑 En Route</option>
+                <option value="Received in Clinic" ${emg.status === 'Received in Clinic' ? 'selected' : ''}>🏥 Received in Clinic</option>
+                <option value="Treated" ${emg.status === 'Treated' ? 'selected' : ''}>🩺 Treated</option>
+                <option value="Resolved" ${emg.status === 'Resolved' ? 'selected' : ''}>✅ Resolved</option>
+              </select>
+            </td>
+            <td>
+              <div style="max-width: 280px; font-size: 0.8rem; line-height: 1.4; color: var(--text-muted);">
+                ${escapeHtml(emg.notes || 'Trauma reception requested')}
+              </div>
+              <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 4px;">${escapeHtml(emg.created_at || '')}</div>
+            </td>
+            <td>
+              <div style="display: flex; gap: 8px;">
+                <a href="https://wa.me/${cleanPhone}?text=${waMsg}" target="_blank" class="btn-action btn-wa">💬 WhatsApp</a>
+                <a href="tel:${cleanPhone}" class="btn-action btn-tel">📞 Call</a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderInquiries(list) {
+      document.getElementById('record-count').textContent = list.length;
+      const thead = document.getElementById('tableHead');
+      thead.innerHTML = `
+        <tr>
+          <th>Sender</th>
+          <th>Sector</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Actions</th>
+        </tr>
+      `;
+
+      const tbody = document.getElementById('tableBody');
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state"><div class="empty-state-icon">✉️</div>No inquiry messages found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(inq => {
+        const cleanPhone = (inq.phone || '').replace(/[^0-9]/g, '');
+        return `
+          <tr>
+            <td>
+              <div style="font-weight: 700;">${escapeHtml(inq.name)}</div>
+              ${inq.email ? `<div style="font-size: 0.78rem; color: var(--text-muted);">${escapeHtml(inq.email)}</div>` : ''}
+              ${inq.phone ? `<div style="font-size: 0.78rem; color: var(--text-muted);">${escapeHtml(inq.phone)}</div>` : ''}
+            </td>
+            <td>
+              <span class="badge-sector sector-${escapeHtml(inq.sector || 'orthopedic')}">${escapeHtml(inq.sector || 'orthopedic')}</span>
+            </td>
+            <td><strong>${escapeHtml(inq.subject || 'General Consultation')}</strong></td>
+            <td>
+              <div style="max-width: 360px; font-size: 0.85rem; line-height: 1.4; color: var(--text-dark);">
+                ${escapeHtml(inq.message || '')}
+              </div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">${escapeHtml(inq.created_at || '')}</div>
+            </td>
+            <td>
+              <div style="display: flex; gap: 8px;">
+                ${cleanPhone ? `<a href="https://wa.me/${cleanPhone}" target="_blank" class="btn-action btn-wa">💬 WhatsApp</a>` : ''}
+                ${inq.email ? `<a href="mailto:${escapeHtml(inq.email)}" class="btn-action btn-email">✉️ Email</a>` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function updateRecordStatus(type, id, newStatus) {
+      try {
+        const res = await fetch('/api/update-status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: type, id: id, status: newStatus })
+        });
+        const data = await res.json();
+        showToast(data.message || 'Status updated successfully!');
+        loadAllData();
+      } catch (err) {
+        showToast('Failed to update status. Please verify server connection.');
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Auto-load upon loading
+    window.addEventListener('DOMContentLoaded', loadAllData);
+  </script>
+</body>
+</html>
